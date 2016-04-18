@@ -4,6 +4,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import java.util.HashMap;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -14,15 +16,33 @@ public class MainActivity extends AppCompatActivity {
 
 
         // Example request
-        NetworkManager.getInstance().register("morten@qandroid.net", "qan", "123qwe123", new APIListener<String>() {
-            @Override
-            public void getResult(String result) {
-                if (!result.isEmpty()) {
-                    Log.d("FUCYEAH", result);
-                    // TODO: Handle errors
-                    //do what you need with the result...
-                }
-            }
-        });
+//        NetworkManager.getInstance().register("morten@qandroid.net", "qan", "123qwe123", new APIListener<String>() {
+//            @Override
+//            public void getResult(String result) {
+//                if (!result.isEmpty()) {
+//                    Log.d("FUCYEAH", result);
+//                    // TODO: Handle errors
+//                    //do what you need with the result...
+//                }
+//            }
+//        });
+
+
+//        NetworkManager.getInstance().getGames(new APIListener<String>() {
+//            @Override
+//            public void getResult(String object) {
+//
+//            }
+//
+//            @Override
+//            public void getGamesResult(String error, HashMap result) {
+//                if (!error.isEmpty()) {
+//                    Log.d("ERROR", error.toString());
+//                }
+//                else {
+//                    Log.d("SUCCESS", result.toString());
+//                }
+//            }
+//        });
     }
 }

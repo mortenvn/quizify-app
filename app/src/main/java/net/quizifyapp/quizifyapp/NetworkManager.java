@@ -31,7 +31,7 @@ public class NetworkManager {
 
     private NetworkManager(Context context) {
         requestQueue = Volley.newRequestQueue(context.getApplicationContext());
-//        context.getResources().getXml(R.xml.api);
+//        context.getResources().getXml(R.xml.api); // TODO: Add settings file
     }
 
     public static synchronized NetworkManager getInstance(Context context) {
@@ -63,21 +63,16 @@ public class NetworkManager {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d(TAG + ": ", "somePostRequest Response : " + response.toString());
-                        if(null != response.toString()) {
-                            listener.getResult(response.toString());
-                            // TODO: Save authkey
-                        }
-
+                        Log.d(TAG + ": ", "Register Response : " + response.toString());
+                        // TODO: Save authkey
+                        listener.getResult(null);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        if (null != error.networkResponse) {
-                            Log.d(TAG + ": ", "Error Response code: " + error.networkResponse.statusCode);
-                            listener.getResult(null);
-                        }
+                        Log.d(TAG + ": ", "Register error response code: " + error.networkResponse.statusCode);
+                        listener.getResult(error.getMessage());
                     }
                 });
 
@@ -98,51 +93,60 @@ public class NetworkManager {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d(TAG + ": ", "somePostRequest Response : " + response.toString());
-                        if(null != response.toString()) {
-                            listener.getResult(response.toString());
-                            // TODO: Save authkey
-                        }
-
+                        Log.d(TAG + ": ", "Login Response : " + response.toString());
+                        // TODO: Save authkey
+                        listener.getResult(null);
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        if (null != error.networkResponse) {
-                            Log.d(TAG + ": ", "Error Response code: " + error.networkResponse.statusCode);
-                            listener.getResult(null);
-                        }
+                        Log.d(TAG + ": ", "Login error response code: " + error.networkResponse.statusCode);
+                        listener.getResult(error.getMessage());
                     }
                 });
 
         requestQueue.add(request);
     }
 
-    public void getGames(final APIListener<String> listener) {
-        String url = prefixURL + "/games/";
+//    public void getGames(final APIListener<String> listener) {
+//        String url = prefixURL + "/games/";
+//
+//        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, new JSONObject(),
+//                new Response.Listener<JSONObject>() {
+//                    @Override
+//                    public void onResponse(JSONObject response) {
+//                        listener.getResult(null, null); // TODO: To hashmap
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        Log.d(TAG + ": ", "Error Response code: " + error.networkResponse.statusCode);
+//                        listener.getResult(error.getMessage());
+//                    }
+//                });
+//
+//        requestQueue.add(request);
+//    }
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, new JSONObject(),
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        listener.getResult(response.toString());
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        if (null != error.networkResponse) {
-                            Log.d(TAG + ": ", "Error Response code: " + error.networkResponse.statusCode);
-                            listener.getResult(null);
-                        }
-                    }
-                });
+    public void rejectInvite() {
 
-        requestQueue.add(request);
+    }
+
+    public void acceptInvite() {
+
     }
 
     public void newGame() {
+
+    }
+
+    public void saveRound() {
+
+    }
+
+    public void getRandCateogries() {
 
     }
 }
