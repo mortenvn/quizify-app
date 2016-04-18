@@ -10,6 +10,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -64,8 +65,13 @@ public class NetworkManager {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.d(TAG + ": ", "Register Response : " + response.toString());
-                        // TODO: Save authkey
-                        listener.getResult(null);
+                        try {
+                            authKey = response.getString("token");
+                            listener.getResult(null);
+                        } catch (JSONException e) {
+                            listener.getResult("Token not returned");
+                            e.printStackTrace();
+                        }
                     }
                 },
                 new Response.ErrorListener() {

@@ -56,12 +56,14 @@ public class MainActivity extends AppCompatActivity {
 
         NetworkManager.getInstance().register(emailText, usernameText, passwordText, new APIListener<String>() {
             @Override
-            public void getResult(String result) {
-                if (!result.isEmpty()) {
-                    Log.d("Fuck yeah TOKEN", result);
-                    Toast.makeText(getApplicationContext(), result, Toast.LENGTH_LONG).show();
-                    // TODO: Handle errors
+            public void getResult(String error) {
+                if(error != null) {
+                    Toast.makeText(getApplicationContext(), error, Toast.LENGTH_LONG).show();
+                    return;
                 }
+
+                Toast.makeText(getApplicationContext(), "Successfully registered", Toast.LENGTH_LONG).show();
+
             }
         });
 
