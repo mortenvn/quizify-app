@@ -20,8 +20,8 @@ public class NetworkManager {
     private static NetworkManager instance = null;
 
     private static final String prefixURL = "http://kane.royrvik.org:8000";
-    private static final String clientID = "";
-    private static final String clientSecret = "";
+    private static final String clientID = "VoquKbj42SBvq9bpfcSsFIbnUOcsihQ2roHL0js9";
+    private static final String clientSecret = "P8WnEHBUpFRDR09jFnCzZ2wHQvDF8B5JyFHagTM27gjFHaGIhinT3sPCC0DpfGgvlZlge1nNWUUSh0rX16MimCbil1yAkrSGe2RB2mc7jEKnQe2QrW7UcoUMVbqtAIvy";
     private static final String grantType = "password";
 
     private static String authKey = null;
