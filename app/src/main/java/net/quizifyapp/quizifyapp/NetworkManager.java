@@ -1,7 +1,6 @@
 package net.quizifyapp.quizifyapp;
 
 import android.content.Context;
-import android.util.ArrayMap;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
@@ -34,7 +33,6 @@ public class NetworkManager {
 
     private NetworkManager(Context context) {
         requestQueue = Volley.newRequestQueue(context.getApplicationContext());
-//        context.getResources().getXml(R.xml.api); // TODO: Add settings file
     }
 
     public static synchronized NetworkManager getInstance(Context context) {
@@ -155,22 +153,22 @@ public class NetworkManager {
     }
 
     public void rejectInvite() {
-
+        // TODO: Create custom URL
     }
 
     public void acceptInvite() {
-
+        // TODO: Create custom URL
     }
 
     public void newGame() {
-
+        // TODO: Post new Game to /games/?
     }
 
     public void saveRound() {
-
+        // TODO: Create custom POST url in API
     }
 
-    public void getRandCateogries() {
-
+    public void getCateogries() {
+        // TODO: Return all from /categories/
     }
 }
