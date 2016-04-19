@@ -149,14 +149,6 @@ public class NetworkManager {
         requestQueue.add(request);
     }
 
-    public void rejectInvite() {
-        // TODO: Create custom URL
-    }
-
-    public void acceptInvite() {
-        // TODO: Create custom URL
-    }
-
     public void sendInvite(String id, final APIObjectResponseListener<String, Map<String, Object>> listener) {
         String url = prefixURL + "/games/";
 
@@ -189,10 +181,6 @@ public class NetworkManager {
         };
 
         requestQueue.add(request);
-    }
-
-    public void saveRound() {
-        // TODO: Create custom POST url in API
     }
 
     public void getCateogries(final APIObjectResponseListener<String, Map<String, Object>> listener) {
@@ -257,5 +245,15 @@ public class NetworkManager {
         };
 
         requestQueue.add(request);
+    }
+
+    public void acceptInvite() {
+        // TODO: Create custom URL
+        //          - Should create new round
+        //          - Send notification to player that invited
+    }
+
+    public void saveRound() {
+        // TODO: Create custom POST url in API
     }
 }
