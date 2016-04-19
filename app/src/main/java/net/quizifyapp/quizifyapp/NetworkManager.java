@@ -115,9 +115,6 @@ public class NetworkManager {
                 });
 
         requestQueue.add(request);
-
-
-        requestQueue.add(request);
     }
 
     public void getGames(final APIObjectResponseListener<String, Map<String, Object>> listener) {
@@ -160,8 +157,38 @@ public class NetworkManager {
         // TODO: Create custom URL
     }
 
-    public void newGame() {
-        // TODO: Post new Game to /games/?
+    public void sendInvite(String id, final APIObjectResponseListener<String, Map<String, Object>> listener) {
+        String url = prefixURL + "/games/";
+
+        Map<String, Object> jsonParams = new HashMap<>();
+        jsonParams.put("player2", id);
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(jsonParams),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            listener.getResult(null, Utils.jsonToMap(response));
+                        } catch (JSONException e) {
+                            listener.getResult("Server responded with invalid data", null);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        listener.getResult(error.getMessage(), null);
+                    }
+                }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> params =  new HashMap<>();
+                params.put("Authorization", "Bearer " + authKey);
+                return params;
+            }
+        };
+
+        requestQueue.add(request);
     }
 
     public void saveRound() {
