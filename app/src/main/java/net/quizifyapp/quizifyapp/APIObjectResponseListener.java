@@ -1,5 +1,5 @@
 package net.quizifyapp.quizifyapp;
 
-public interface APIObjectResponseListener<T> {
-    public void getResult(T error, T result);
+public interface APIObjectResponseListener<T, Z> {
+    public void getResult(T error, Z result);
 }

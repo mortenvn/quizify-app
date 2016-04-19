@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     Button registerButton;
@@ -47,10 +48,15 @@ public class MainActivity extends AppCompatActivity {
 
                 Toast.makeText(getApplicationContext(), "Successfully logged in", Toast.LENGTH_LONG).show();
 
-                NetworkManager.getInstance().getGames(new APIObjectResponseListener<String>() {
+                NetworkManager.getInstance().getGames(new APIObjectResponseListener<String, Map<String,Object>>() {
                     @Override
-                    public void getResult(String error, String result) {
-                        Log.d("ANDREAS", "DONE");
+                    public void getResult(String error, Map<String,Object> result) {
+                        if(error != null) {
+                            Toast.makeText(getApplicationContext(), error, Toast.LENGTH_LONG).show();
+                            return;
+                        }
+
+                        Log.d("ANDREAS", result.toString());
                     }
                 });
 

@@ -88,93 +88,52 @@ public class NetworkManager {
     }
 
     public void login(String username, String password, final APIAuthenticationResponseListener<String> listener) {
-        String url = prefixURL + "/auth/token/";
-//        String url = prefixURL + "/debug/";
+        String url = prefixURL + "/login/";
 
         Map<String, Object> jsonParams = new HashMap<>();
-        Log.d("ANDREAS", username);
-        Log.d("ANDREAS", password);
-        Log.d("ANDREAS", clientID);
-        Log.d("ANDREAS", clientSecret);
-        Log.d("ANDREAS", grantType);
         jsonParams.put("username", username);
         jsonParams.put("password", password);
         jsonParams.put("client_id", clientID);
-        jsonParams.put("client_secret", clientSecret);
-        jsonParams.put("grant_type", grantType);
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(jsonParams),
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d(TAG + ": ", "Login Response : " + response.toString());
+                        Log.d(TAG + ": ", "Register Response : " + response.toString());
                         try {
-                            Log.d("ANDREAS", authKey);
                             authKey = response.getString("token");
-                            Log.d("ANDREAS", authKey);
-                            Log.d("ANDREAS", "==================================");
                             listener.getResult(null);
                         } catch (JSONException e) {
                             listener.getResult("Token not returned");
-                            e.printStackTrace();
                         }
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
-                        String lol = new String(error.networkResponse.data);
-
-                        Log.d(TAG + ": ", "Login error response code: " + error.networkResponse.statusCode);
-                        Log.d(TAG + ": ", "Login error response code: " + error.networkResponse);
-                        Log.d(TAG + ": ", "Login error response code: " + lol);
-                        Log.d(TAG + ": ", "Login error response msg: " + error.getMessage());
-                        Log.d(TAG + ": ", "Login error response msg: " + error.getLocalizedMessage());
-                        Log.d(TAG + ": ", "Login error response msg: " + error.toString());
+                        Log.d(TAG + ": ", "Register error response code: " + error.networkResponse.statusCode);
                         listener.getResult(error.getMessage());
                     }
-                }) {
-            @Override
-            public String getBodyContentType() {
-                return "application/x-www-form-urlencoded; charset=UTF-8";
-            }
+                });
 
-            // this is the relevant method
-            @Override
-            protected Map<String, String> getParams()
-            {
-                Map<String, String>  params = new HashMap<String, String>();
-                params.put("username", "mortnod");
-                params.put("password", "Andreas12");
-                params.put("client_id", clientID);
-                params.put("client_secret", clientSecret);
-                params.put("grant_type", grantType);
+        requestQueue.add(request);
 
-                return params;
-            }
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Log.d("ANDREAS", "FUCK");
-                Map<String,String> params = new HashMap<String, String>();
-                params.put("Content-Type","application/x-www-form-urlencoded");
-                return params;
-            }
-        };
 
         requestQueue.add(request);
     }
 
-    public void getGames(final APIObjectResponseListener<String> listener) {
+    public void getGames(final APIObjectResponseListener<String, Map<String, Object>> listener) {
         String url = prefixURL + "/games/";
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, new JSONObject(),
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d("ANDREAS", response.toString());
-                        listener.getResult(null, null); // TODO: To hashmap
+                        try {
+                            listener.getResult(null, Utils.jsonToMap(response));
+                        } catch (JSONException e) {
+                            listener.getResult("Server responded with invalid data", null);
+                        }
                     }
                 },
                 new Response.ErrorListener() {
@@ -187,7 +146,6 @@ public class NetworkManager {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String,String> params =  new HashMap<>();
-//                if(params==null)params = new HashMap<>();
                 params.put("Authorization", "Bearer " + authKey);
                 return params;
             }
