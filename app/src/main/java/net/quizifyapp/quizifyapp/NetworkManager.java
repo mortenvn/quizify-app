@@ -97,7 +97,7 @@ public class NetworkManager {
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        Log.d(TAG + ": ", "Register Response : " + response.toString());
+                        Log.d(TAG + ": ", "Login Response : " + response.toString());
                         try {
                             authKey = response.getString("token");
                             listener.getResult(null);
@@ -109,7 +109,7 @@ public class NetworkManager {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.d(TAG + ": ", "Register error response code: " + error.networkResponse.statusCode);
+                        Log.d(TAG + ": ", "Login error response code: " + error.networkResponse.statusCode);
                         listener.getResult(error.getMessage());
                     }
                 });
@@ -168,7 +168,35 @@ public class NetworkManager {
         // TODO: Create custom POST url in API
     }
 
-    public void getCateogries() {
-        // TODO: Return all from /categories/
+    public void getCateogries(final APIObjectResponseListener<String, Map<String, Object>> listener) {
+        String url = prefixURL + "/categories/";
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, new JSONObject(),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            listener.getResult(null, Utils.jsonToMap(response));
+                        } catch (JSONException e) {
+                            listener.getResult("Server responded with invalid data", null);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d(TAG + ": ", "Error Response code: " + error.getMessage());
+                        listener.getResult(error.getMessage(), null);
+                    }
+                }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> params =  new HashMap<>();
+                params.put("Authorization", "Bearer " + authKey);
+                return params;
+            }
+        };
+
+        requestQueue.add(request);
     }
 }
