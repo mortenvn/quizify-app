@@ -14,7 +14,7 @@ import java.util.HashMap;
 public class MainActivity extends AppCompatActivity {
     Button registerButton;
     EditText usernameField;
-    EditText emailField;
+//    EditText emailField;
     EditText passwordField;
 
 
@@ -26,35 +26,18 @@ public class MainActivity extends AppCompatActivity {
 
         registerButton = (Button) findViewById(R.id.register_button);
         usernameField = (EditText) findViewById(R.id.username);
-        emailField = (EditText) findViewById(R.id.email);
+//        emailField = (EditText) findViewById(R.id.email);
         passwordField = (EditText) findViewById(R.id.password);
 
     }
 
     public void setLogin(View v) {
         String usernameText = usernameField.getText().toString();
-        String emailText = emailField.getText().toString();
+//        String emailText = emailField.getText().toString();
         String passwordText = passwordField.getText().toString();
 
 
-//        NetworkManager.getInstance().getGames(new APIListener<String>() {
-//            @Override
-//            public void getResult(String object) {
-//
-//            }
-//
-//            @Override
-//            public void getGamesResult(String error, HashMap result) {
-//                if (!error.isEmpty()) {
-//                    Log.d("ERROR", error.toString());
-//                }
-//                else {
-//                    Log.d("SUCCESS", result.toString());
-//                }
-//            }
-//        });
-
-        NetworkManager.getInstance().register(emailText, usernameText, passwordText, new APIListener<String>() {
+        NetworkManager.getInstance().login(usernameText, passwordText, new APIAuthenticationResponseListener<String>() {
             @Override
             public void getResult(String error) {
                 if(error != null) {
@@ -62,7 +45,14 @@ public class MainActivity extends AppCompatActivity {
                     return;
                 }
 
-                Toast.makeText(getApplicationContext(), "Successfully registered", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Successfully logged in", Toast.LENGTH_LONG).show();
+
+                NetworkManager.getInstance().getGames(new APIObjectResponseListener<String>() {
+                    @Override
+                    public void getResult(String error, String result) {
+                        Log.d("ANDREAS", "DONE");
+                    }
+                });
 
             }
         });
