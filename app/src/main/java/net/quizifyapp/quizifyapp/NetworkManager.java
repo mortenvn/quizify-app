@@ -226,4 +226,36 @@ public class NetworkManager {
 
         requestQueue.add(request);
     }
+
+    public void getPlayers(final APIObjectResponseListener<String, Map<String, Object>> listener) {
+        String url = prefixURL + "/players/";
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, new JSONObject(),
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            listener.getResult(null, Utils.jsonToMap(response));
+                        } catch (JSONException e) {
+                            listener.getResult("Server responded with invalid data", null);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d(TAG + ": ", "Error Response code: " + error.getMessage());
+                        listener.getResult(error.getMessage(), null);
+                    }
+                }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> params =  new HashMap<>();
+                params.put("Authorization", "Bearer " + authKey);
+                return params;
+            }
+        };
+
+        requestQueue.add(request);
+    }
 }
